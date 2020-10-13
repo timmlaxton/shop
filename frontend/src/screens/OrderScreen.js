@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react'
+import axios from 'axios'
 import { Link } from 'react-router-dom'
 import { Button, Row, Col, ListGroup, Image, Card } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
@@ -26,8 +27,15 @@ const OrderScreen = ({ match }) => {
 
   
   useEffect(() => {
+    const addPayPalScript = async () => {
+      const {data: clientId} = await axios.get('/api/config/paypal')
+      console.log(clientId)
+    }
+
+    addPayPalScript()
+
    dispatch(getOrderDetails(orderId))
-  }, [, ])
+  }, [dispatch, orderId ])
 
   
 
@@ -48,7 +56,7 @@ const OrderScreen = ({ match }) => {
                 {order.shippingAddress.postalCode},{' '}
                 {order.shippingAddress.country}
               </p>
-              {order.isDelivered ? <Message variant='success'>Delivered on {order.deliveredAt}</Message> : <Message variant='danger'>Not Delivered</Message>}
+              {order.isDelivered ? <Message variant='success'>Delivered on {order.deliveredAt}</Message> : <Message variant='danger'>Not Paid</Message>}
 
             </ListGroup.Item>
 
