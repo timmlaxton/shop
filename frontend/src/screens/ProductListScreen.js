@@ -8,18 +8,19 @@ import {listProducts, deleteProduct, createProduct} from '../actions/productActi
 import {PRODUCT_CREATE_RESET} from '../constants/productConstants'
 
 const ProductListScreen = ({history, match}) => {
+ 
   const dispatch = useDispatch()
 
-  const productList = useSelector(state => state.productList)
+  const productList = useSelector((state) => state.productList)
   const {loading, error, products} = productList
 
-  const productDelete = useSelector(state => state.productDelete)
+  const productDelete = useSelector((state) => state.productDelete)
   const {loading: loadingDelete, error: errorDelete, success: successDelete} = productDelete
 
-  const productCreate = useSelector(state => state.productCreate)
+  const productCreate = useSelector((state) => state.productCreate)
   const {loading: loadingCreate, error: errorCreate, success: successCreate, product: createdProduct} = productCreate
 
-  const userLogin = useSelector(state => state.userLogin)
+  const userLogin = useSelector((state) => state.userLogin)
   const {userInfo} = userLogin
 
   useEffect(() => {
@@ -30,11 +31,11 @@ const ProductListScreen = ({history, match}) => {
     }
 
     if(successCreate) {
-      history.push(`/admin/product/${createProduct._id}/edit`)
+      history.push(`/admin/product/${createdProduct._id}/edit`)
     } else {
       dispatch(listProducts())
     }
-  }, [dispatch, history, userInfo, successDelete, successCreate, createProduct])
+  }, [dispatch, history, userInfo, successDelete, successCreate, createdProduct])
 
   const deleteHandler = (id) => {
     if(window.confirm('Are you sure?')){
@@ -54,7 +55,7 @@ const ProductListScreen = ({history, match}) => {
       </Col>
       <Col className='text-right'>
         <Button className='my-3' onClick={createProductHandler}>
-          <i className='fa fa-plus'></i> Create Product
+            <i className='fa fa-plus'></i> Create Product
         </Button>
       </Col>
     </Row>
@@ -62,9 +63,10 @@ const ProductListScreen = ({history, match}) => {
       {errorDelete && <Message variant='danger'>{errorDelete}</Message> }
       {loadingCreate && <Loader/>}
       {errorCreate && <Message variant='danger'>{errorCreate}</Message> }
-      {loading ? <Loader/> : error ? <Message variant='danger'>{error}</Message>
-      : (
-        <Table striped bordered hover resposnive className='table-sm'>
+      {loading ? ( <Loader/> ) : error ? ( <Message variant='danger'>{error}</Message>
+      ) : (
+        
+        <Table striped bordered hover responsive className='table-sm'>
           <thead>
             <tr>
               <th>ID</th>
@@ -80,12 +82,8 @@ const ProductListScreen = ({history, match}) => {
               <tr key={product._id}>
                 <td>{product._id}</td>
                 <td>{product.name}</td>
-                <td> 
-                £{product.price}
-                </td>
-                <td>
-                 {product.category}
-                </td>
+                <td> £{product.price}</td>
+                <td>{product.category}</td>
                 <td>{product.brand}</td>
                 <td>
                   <LinkContainer to={`/admin/product/${product._id}/edit`}>
@@ -93,7 +91,7 @@ const ProductListScreen = ({history, match}) => {
                       <i className='fas fa-edit'></i>
                     </Button>
                   </LinkContainer>
-                  <Button variant='danger' className='btn-dm' onClick={() => deleteHandler(product._id)}>
+                  <Button variant='danger' className='btn-sm' onClick={() => deleteHandler(product._id)}>
                     <i className='fas fa-trash'></i>
                   </Button>
                 </td>
